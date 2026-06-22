@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Automation Dashboard</title>
+    <meta name="description" content="A clean, modern dashboard UI for a social media automation workflow.">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Phosphor Icons for premium aesthetic -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="background-effects">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+    </div>
+
+    <main class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="header-top">
+                <div class="header-titles">
+                    <h1>Social Media Workflow</h1>
+                    <p>Automate your content distribution</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-api" id="open-settings-btn"><i class="ph ph-gear"></i> Settings</button>
+                    <button class="btn-api" id="open-api-docs-btn"><i class="ph ph-code"></i> API</button>
+                    <button class="btn-logout" id="logout-btn">Log Out</button>
+                </div>
+            </div>
+            
+            <div class="progress-bar-container">
+                <div class="progress-track"></div>
+                <div class="progress-fill" id="progress-fill"></div>
+                <div class="progress-steps">
+                    <div class="progress-step active" id="dot-1"></div>
+                    <div class="progress-step" id="dot-2"></div>
+                    <div class="progress-step" id="dot-3"></div>
+                </div>
+            </div>
+        </header>
+
+        <div class="steps-container">
+            <!-- Step 1 -->
+            <section class="step-card" id="step-1">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h2>Upload Video</h2>
+                </div>
+                <div class="upload-zone" id="upload-zone">
+                    <i class="ph ph-upload-simple"></i>
+                    <h3>Drag & Drop your video here</h3>
+                    <p>Supports MP4, MOV, AVI</p>
+                    <input type="file" id="file-input" accept=".mp4,.mov,.avi" hidden>
+                    <button class="btn-secondary" onclick="document.getElementById('file-input').click()">Browse Files</button>
+                </div>
+                <div class="file-preview hidden" id="file-preview">
+                    <div class="file-info">
+                        <i class="ph ph-video"></i>
+                        <span id="filename-display">video_file.mp4</span>
+                    </div>
+                    <button class="btn-icon" id="remove-file-btn" title="Remove file"><i class="ph ph-x"></i></button>
+                </div>
+            </section>
+
+            <!-- Step 2 -->
+            <section class="step-card disabled" id="step-2">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h2>Video Caption</h2>
+                </div>
+                <div class="caption-container">
+                    <div class="caption-actions">
+                        <button class="btn-ai" id="generate-ai-btn">
+                            <i class="ph ph-sparkle"></i> Generate with AI
+                        </button>
+                    </div>
+                    <div class="textarea-wrapper">
+                        <textarea id="caption-input" placeholder="Write your caption here..." maxlength="2200" disabled></textarea>
+                        <div class="char-counter"><span id="char-count">0</span> / 2200</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 3 -->
+            <section class="step-card disabled" id="step-3">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <h2>Review & Publish</h2>
+                </div>
+                <div class="summary-container">
+                    <div class="summary-item">
+                        <span class="summary-label">Video Name:</span>
+                        <span class="summary-value" id="summary-video">-</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Caption:</span>
+                        <span class="summary-value" id="summary-caption">-</span>
+                    </div>
+                </div>
+                <button class="btn-primary" id="publish-btn" disabled>
+                    <i class="ph ph-paper-plane-tilt"></i> Publish
+                </button>
+            </section>
+        </div>
+        
+        <!-- Success/Error Status Bar -->
+        <div class="status-bar hidden" id="status-bar">
+            <i class="ph ph-check-circle" id="status-icon"></i>
+            <div class="status-content">
+                <h4 id="status-title">Successfully queued!</h4>
+                <p id="status-message">Your video and content are being processed.</p>
+            </div>
+            <button class="btn-secondary hidden" id="retry-btn">Retry</button>
+            <button class="btn-icon" id="close-status-btn"><i class="ph ph-x"></i></button>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay hidden" id="loading-overlay">
+            <div class="spinner"></div>
+            <p id="loading-text">Uploading to Cloudinary...</p>
+        </div>
+
+        <!-- API Docs Modal -->
+        <div class="modal-overlay hidden" id="api-modal">
+            <div class="modal-content" style="max-width: 600px;">
+                <div class="modal-header">
+                    <h2><i class="ph ph-code"></i> Developer API</h2>
+                    <button class="btn-icon" id="close-api-btn"><i class="ph ph-x"></i></button>
+                </div>
+                <div class="modal-body">
+                    <p class="api-modal-subtitle">Use this API to post programmatically.</p>
+                    <div class="input-group" style="margin-top: 15px;">
+                        <label>Your API Key</label>
+                        <input type="text" id="api-key-display" readonly style="background: var(--bg-card); cursor: copy;" onclick="this.select()">
+                    </div>
+                    <div class="input-group" style="margin-top: 15px;">
+                        <label>cURL Example (Upload Local File)</label>
+                        <pre style="background: #111; padding: 15px; border-radius: 8px; color: #4ade80; font-family: monospace; white-space: pre-wrap; font-size: 13px;">curl -X POST http://localhost:4000/api/upload \
+  -H "x-api-key: <span id="curl-api-key">YOUR_API_KEY</span>" \
+  -F "video=@/path/to/video.mp4" \
+  -F "title=My awesome video" \
+  -F "platforms=tiktok,instagram"</pre>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="copy-curl-btn">Copy cURL</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Authentication Overlay -->
+    <div class="auth-overlay" id="auth-overlay">
+        <div class="auth-card">
+            <h2 id="auth-title">Log In</h2>
+            <p id="auth-subtitle">Welcome back to your dashboard</p>
+            
+            <div class="input-group" style="margin-top: 15px;">
+                <label>Email</label>
+                <input type="email" id="auth-email" placeholder="Enter email">
+            </div>
+            <div class="input-group" style="margin-top: 15px;">
+                <label>Password</label>
+                <div style="position: relative; display: flex; align-items: center;">
+                    <input type="password" id="auth-password" placeholder="Enter password" style="padding-right: 40px; width: 100%;">
+                    <button type="button" id="toggle-password-btn" style="position: absolute; right: 10px; background: none; border: none; color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; z-index: 10;">
+                        <i class="ph ph-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="auth-error" style="color: #ef4444; font-size: 14px; margin-top: 10px; display: none;"></div>
+            
+            <button class="btn-primary" id="auth-submit-btn" style="width: 100%; margin-top: 20px;">Log In</button>
+            <p style="text-align: center; margin-top: 15px; font-size: 14px; color: var(--text-secondary);">
+                <span id="auth-switch-text">Don't have an account?</span> 
+                <a href="#" id="auth-switch-btn" style="color: var(--primary); text-decoration: none;">Sign Up</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay hidden" id="settings-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="ph ph-gear"></i> Settings</h2>
+                <button class="btn-icon" id="close-settings-btn"><i class="ph ph-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <p class="api-modal-subtitle">Configure your dashboard and connection settings.</p>
+                <div class="input-group" style="margin-top: 15px;">
+                    <label>Backend Server URL</label>
+                    <input type="text" id="settings-backend-url" placeholder="https://your-backend.com" style="background: var(--bg-card);">
+                </div>
+                <div class="input-group" style="margin-top: 15px;">
+                    <label>Cloud Name</label>
+                    <input type="text" id="cloudinary-cloud-name" placeholder="e.g., dvx123abc" style="background: var(--bg-card);">
+                </div>
+                <div class="input-group" style="margin-top: 15px;">
+                    <label>Upload Preset (Unsigned)</label>
+                    <input type="text" id="cloudinary-upload-preset" placeholder="e.g., my_preset" style="background: var(--bg-card);">
+                </div>
+                <div class="input-group" style="margin-top: 15px;">
+                    <label>n8n Webhook URL</label>
+                    <input type="text" id="n8n-webhook-url" placeholder="https://your-n8n-url.com/webhook/..." style="background: var(--bg-card);">
+                </div>
+                <button class="btn-primary" id="save-settings-btn" style="margin-top: 20px; width: 100%;">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

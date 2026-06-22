@@ -1,0 +1,1181 @@
+{
+  "name": "Social media Automation ( full )",
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "resource": "fileFolder",
+        "limit": 1,
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "1utrB1CxqVnjTARKU2H72UK-30XIGFrfR",
+            "mode": "id"
+          }
+        },
+        "options": {
+          "fields": [
+            "*"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -16,
+        144
+      ],
+      "id": "5400afb6-f364-4ddc-b874-dca1cf449305",
+      "name": "Search files and folders",
+      "credentials": {
+        "googleApi": {
+          "id": "4bxmteEHeDvXKTyE",
+          "name": "Google Service Account account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1gaKDx4QKufTn4awMW8hShu3b69WWHrIp22PQG1ECUZE",
+          "mode": "list",
+          "cachedResultName": " Social Media Full",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gaKDx4QKufTn4awMW8hShu3b69WWHrIp22PQG1ECUZE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gaKDx4QKufTn4awMW8hShu3b69WWHrIp22PQG1ECUZE/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Status",
+              "lookupValue": "panding"
+            }
+          ]
+        },
+        "options": {
+          "returnFirstMatch": true
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        752,
+        144
+      ],
+      "id": "757005f8-0a10-411b-af32-dc7c63bb0f64",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "4bxmteEHeDvXKTyE",
+          "name": "Google Service Account account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1gaKDx4QKufTn4awMW8hShu3b69WWHrIp22PQG1ECUZE",
+          "mode": "list",
+          "cachedResultName": " Social Media Full",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gaKDx4QKufTn4awMW8hShu3b69WWHrIp22PQG1ECUZE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gaKDx4QKufTn4awMW8hShu3b69WWHrIp22PQG1ECUZE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Update caption & vid url').item.json.row_number }}",
+            "Status": "video published"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "video_url",
+              "displayName": "video_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Video Caption",
+              "displayName": "Video Caption",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2080,
+        1584
+      ],
+      "id": "b00018f3-beff-464f-8fd4-5f432fb98726",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "4bxmteEHeDvXKTyE",
+          "name": "Google Service Account account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 3
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -352,
+        144
+      ],
+      "id": "6318d9bc-3b3d-492f-8cf4-1ad3fb2de480",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "1037092092813150",
+        "edge": "video_reels",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "upload_phase",
+                "value": "start"
+              },
+              {
+                "name": "url",
+                "value": "={{ $json.video_url }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        352,
+        512
+      ],
+      "id": "20c35f01-8982-4c03-9425-fdc68bdcf194",
+      "name": "Initialize an Upload Session",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "60zTMIdGvR1TM2my",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.upload_url }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "facebookGraphApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "file_url",
+              "value": "={{ $('Update caption & vid url').item.json.video_url }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        576,
+        512
+      ],
+      "id": "f7d72bb9-9c1f-4543-adbb-f1f69eb3f62e",
+      "name": "Upload a Hosted File",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "60zTMIdGvR1TM2my",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "hostUrl": "graph-video.facebook.com",
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "1037092092813150",
+        "edge": "video_reels",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "upload_phase",
+                "value": "finish"
+              },
+              {
+                "name": "video_state",
+                "value": "PUBLISHED"
+              },
+              {
+                "name": "description",
+                "value": "={{ $('Update caption & vid url').item.json['Video Caption'] }}"
+              },
+              {
+                "name": "video_id",
+                "value": "={{ $('Initialize an Upload Session').item.json.video_id }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        768,
+        512
+      ],
+      "id": "8941c906-c046-4a1d-a556-26a8747a775c",
+      "name": "Publish The Reel ",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "60zTMIdGvR1TM2my",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v24.0/{{ $('Initialize an Upload Session').item.json.video_id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "facebookGraphApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "fields",
+              "value": "status    "
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        960,
+        512
+      ],
+      "id": "710378f9-41cd-4764-974c-be44eacf236f",
+      "name": "Get the Upload Status",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "60zTMIdGvR1TM2my",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const baseName = $json[\"name\"]\n  .replace(/\\s*\\.[^/.]+$/, \"\")  // remove file extension\n  .trim();                       // trim leading/trailing spaces\n\nconst public_id_underscores = baseName.replace(/\\s+/g, \"_\"); // spaces → underscores\nconst public_id_no_underscores = baseName;                    // spaces preserved\n\nreturn [\n  {\n    json: {\n      public_id_underscores,\n      public_id_no_underscores\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        256,
+        144
+      ],
+      "id": "1a766edc-d725-40ce-a95c-ebe51d80ba63",
+      "name": "Remove Space & extensions"
+    },
+    {
+      "parameters": {
+        "content": "## Post to Facebook Page",
+        "height": 80,
+        "width": 1392,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        384
+      ],
+      "id": "a7a052a1-9af2-4685-93eb-cb7bf17506fe",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841474149721655",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "media_type",
+                "value": "REELS"
+              },
+              {
+                "name": "video_url",
+                "value": "={{ $('Update caption & vid url').item.json.video_url }}"
+              },
+              {
+                "name": "caption",
+                "value": "={{ $('Update caption & vid url').item.json['Video Caption'] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        352,
+        864
+      ],
+      "id": "af1580b3-1f1b-4731-b0f2-27a543e56987",
+      "name": "Post Container",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "hptaBGxsgVYizrTZ",
+          "name": "insta account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841474149721655",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $('Post Container').item.json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        816,
+        864
+      ],
+      "id": "6c79491d-6f86-4397-aebb-284cc26acd18",
+      "name": "Upload to instagram",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "hptaBGxsgVYizrTZ",
+          "name": "insta account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        592,
+        864
+      ],
+      "id": "cf23f5a8-a726-4e85-86b1-1a3ae2fe6921",
+      "name": "Wait",
+      "webhookId": "9d466225-2217-41f8-ba58-84cdeeb15bea"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1056,
+        864
+      ],
+      "id": "dbc1cc87-e34c-45ad-bc10-9188b67e0557",
+      "name": "Wait1",
+      "webhookId": "9d466225-2217-41f8-ba58-84cdeeb15bea"
+    },
+    {
+      "parameters": {
+        "content": "## Post to Instagram Page",
+        "height": 80,
+        "width": 1392,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        720
+      ],
+      "id": "467ea6e2-86ea-4720-834c-378e3eeda221",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## update sheet & Drive",
+        "height": 80,
+        "width": 1392,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        1440
+      ],
+      "id": "c56b6da1-9992-4028-93ad-d219e8b251cd",
+      "name": "Sticky Note2",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Get Video & Caption",
+        "height": 80,
+        "width": 1408
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a5ff661a-4bc9-466c-88a8-efdf5e4dbe4b",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1184,
+        512
+      ],
+      "id": "7b89c276-d5d0-4705-a642-99ac0e61e0fc",
+      "name": "Wait2",
+      "webhookId": "c83f4d27-0325-49c1-b60b-740d51536353"
+    },
+    {
+      "parameters": {
+        "content": "## When To Post",
+        "height": 256,
+        "width": 336,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        80
+      ],
+      "id": "5fe9626b-4ba5-44b9-ab27-fdd8ae01953e",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1gaKDx4QKufTn4awMW8hShu3b69WWHrIp22PQG1ECUZE",
+          "mode": "list",
+          "cachedResultName": " Social Media Full",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gaKDx4QKufTn4awMW8hShu3b69WWHrIp22PQG1ECUZE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gaKDx4QKufTn4awMW8hShu3b69WWHrIp22PQG1ECUZE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Get row(s) in sheet').item.json.row_number }}",
+            "video_url": "={{ $('Upload an asset from URL').item.json.secure_url }}",
+            "Video Caption": "={{ $json.choices[0].message.content }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "video_url",
+              "displayName": "video_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Video Caption",
+              "displayName": "Video Caption",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1216,
+        144
+      ],
+      "id": "9e977716-b364-4975-98ec-d1e6766cf75f",
+      "name": "Update caption & vid url",
+      "credentials": {
+        "googleApi": {
+          "id": "4bxmteEHeDvXKTyE",
+          "name": "Google Service Account account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "upload",
+        "title": "={{ $('Remove Space & extensions').item.json.public_id_no_underscores }}",
+        "regionCode": "US",
+        "categoryId": "22",
+        "options": {
+          "description": "={{ $('Update caption & vid url').item.json['Video Caption'] }}",
+          "notifySubscribers": true,
+          "privacyStatus": "public",
+          "selfDeclaredMadeForKids": false,
+          "tags": "amazon affiliate, amazon, amazon product"
+        }
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        2000,
+        864
+      ],
+      "id": "65881aad-68c8-43b7-b1ad-422545c181d6",
+      "name": "Upload a video",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "d9emPdq3VuZWq6bL",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "videoCategory"
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        2512,
+        720
+      ],
+      "id": "e8114127-5fbe-479d-8b90-c15be54f7e3f",
+      "name": "Add To playlist",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "d9emPdq3VuZWq6bL",
+          "name": "YouTube account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2272,
+        864
+      ],
+      "id": "4ad036cd-dc44-49cd-b2b5-d61c9392c927",
+      "name": "Wait3",
+      "webhookId": "3d16c609-e26a-439b-a0cf-890a999358db"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2768,
+        864
+      ],
+      "id": "d06a1d01-c481-4345-bbcc-8358efe4d07f",
+      "name": "Wait4",
+      "webhookId": "3d16c609-e26a-439b-a0cf-890a999358db"
+    },
+    {
+      "parameters": {
+        "content": "## Post to Youtube",
+        "height": 80,
+        "width": 1376,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        704
+      ],
+      "id": "1b273bbd-26e5-4a44-9127-14912b672559",
+      "name": "Sticky Note5",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1gaKDx4QKufTn4awMW8hShu3b69WWHrIp22PQG1ECUZE",
+          "mode": "list",
+          "cachedResultName": " Social Media Full",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gaKDx4QKufTn4awMW8hShu3b69WWHrIp22PQG1ECUZE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gaKDx4QKufTn4awMW8hShu3b69WWHrIp22PQG1ECUZE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "video_url": "={{ $('Update caption & vid url').item.json.video_url }}",
+            "Video Caption": "={{ $('Update caption & vid url').item.json['Video Caption'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "video_url",
+              "displayName": "video_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Video Caption",
+              "displayName": "Video Caption",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2256,
+        1232
+      ],
+      "id": "6933de5e-7031-450f-a217-ced227c56c46",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "4bxmteEHeDvXKTyE",
+          "name": "Google Service Account account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Post to TiktTok",
+        "height": 80,
+        "width": 1392,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1584,
+        1088
+      ],
+      "id": "8182ef1e-0935-4c82-a9df-1be5e1415e3c",
+      "name": "Sticky Note6",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"anthropic/claude-3.7-sonnet\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a social media copywriter expert. Follow formatting rules exactly.\"\n    },\n    {\n      \"role\": \"user\",\n       \"content\": \"based on this keyword {{ $('Remove Space & extensions').item.json.public_id_no_underscores }} Write an optimized facebook Reel title ( max 46 characters ),use 5 related hashtags, Do NOT include labels like (Video Reel Title,Hashtags) no emojis, don't use ** in title.\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        992,
+        144
+      ],
+      "id": "750f83a5-f6dd-4d9d-8b22-c2e9660e6a1b",
+      "name": "video Caption ",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "jjZQF6pINMAWCpsQ",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Update caption & vid url').item.json.video_url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1760,
+        864
+      ],
+      "id": "b7e39933-95d9-460e-a319-3e4ac38f0788",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "move",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Search files and folders').item.json.id }}",
+          "mode": "id"
+        },
+        "driveId": {
+          "__rl": true,
+          "value": "1utrB1CxqVnjTARKU2H72UK-30XIGFrfR",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1bNagF2_NW4H6MFiLlasheT_1L5sjKxbk",
+          "mode": "id"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        2368,
+        1584
+      ],
+      "id": "f567d810-7e6d-4a1d-8938-0c77a45ebbe5",
+      "name": "Move file1",
+      "credentials": {
+        "googleApi": {
+          "id": "4bxmteEHeDvXKTyE",
+          "name": "Google Service Account account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Search files and folders').item.json.webContentLink }}",
+        "resource_type": "video",
+        "additionalFields": {
+          "folder": "social_media",
+          "public_id": "={{ $json.public_id_underscores }}"
+        }
+      },
+      "type": "n8n-nodes-cloudinary.cloudinary",
+      "typeVersion": 1,
+      "position": [
+        512,
+        144
+      ],
+      "id": "c90d4e1d-784f-41b4-8faa-b402bbfc6d19",
+      "name": "Upload an asset from URL",
+      "credentials": {
+        "cloudinaryApi": {
+          "id": "ALq8RHad6vp3d6PZ",
+          "name": "Cloudinary account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Search files and folders": {
+      "main": [
+        [
+          {
+            "node": "Remove Space & extensions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "video Caption ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Move file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Search files and folders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Initialize an Upload Session": {
+      "main": [
+        [
+          {
+            "node": "Upload a Hosted File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload a Hosted File": {
+      "main": [
+        [
+          {
+            "node": "Publish The Reel ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Publish The Reel ": {
+      "main": [
+        [
+          {
+            "node": "Get the Upload Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get the Upload Status": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove Space & extensions": {
+      "main": [
+        [
+          {
+            "node": "Upload an asset from URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post Container": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to instagram": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Upload to instagram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "Post Container",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update caption & vid url": {
+      "main": [
+        [
+          {
+            "node": "Initialize an Upload Session",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload a video": {
+      "main": [
+        [
+          {
+            "node": "Wait3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait3": {
+      "main": [
+        [
+          {
+            "node": "Wait4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add To playlist": {
+      "main": [
+        []
+      ]
+    },
+    "Wait4": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "video Caption ": {
+      "main": [
+        [
+          {
+            "node": "Update caption & vid url",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Upload a video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload an asset from URL": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "1385b714-ca6e-4697-a360-bed0f42a299e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "eabdfa7c83af4dbdcc56d7d23e3e87b19bc6c2089d3632f352ca259c58aa044c"
+  },
+  "id": "U51LghJZaosQvJyw",
+  "tags": []
+}
