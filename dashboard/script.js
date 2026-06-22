@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         user: JSON.parse(localStorage.getItem('saas_user')) || null
     };
 
-    let API_BASE = localStorage.getItem('saas_backend_url') || (window.location.origin.startsWith('http') ? window.location.origin : 'http://localhost:4000');
+   let API_BASE = localStorage.getItem('saas_backend_url') || 'https://your-real-backend-server.com';
 
     // Elements
     const dashboardContainer = document.querySelector('.dashboard-container');
